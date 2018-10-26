@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" th:href="@{/css/icon.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/css/xidi.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/css/base.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/css/home.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/css/jHsDate.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/layui/css/layui.css}">
+<script type="text/javascript" th:src="@{/layui/layui.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/date.js}"></script>
+<script type="text/javascript" th:src="@{/js/up.js}"></script>
+<script type="text/javascript" th:src="@{/js/area.js}"></script>
+<script type="text/javascript" th:src="@{/js/jHsDate.js}"></script>
+<body>
+<form class="layui-form" action="/admin/oldvip/save" method='post'>
+	<input th:value="${oldvip.id}==null?'':${oldvip.id}" style="display:none" name="id">
+  <div class="layui-form-item">
+    <label class="layui-form-label">姓名</label>
+    <div class="layui-input-block">
+      <input type="text" name="name" th:value="${oldvip.name}==null?'':${oldvip.name}" required  lay-verify="required" placeholder="请输入姓名" autocomplete="off" class="layui-input">
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">手机号</label>
+    <div class="layui-input-block">
+      <input type="text" name="phone" th:value="${oldvip.phone}==null?'':${oldvip.phone}" required  lay-verify="required|phone" placeholder="请输入手机号" autocomplete="off" class="layui-input">
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">收款人</label>
+    <div class="layui-input-block">
+      <input type="text" name="clerk" th:value="${oldvip.clerk}==null?'':${oldvip.clerk}" required  lay-verify="required" placeholder="请输入收款人名" autocomplete="off" class="layui-input">
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">支付方法</label>
+    <div class="layui-input-block">
+      <select name="payMethod" lay-filter="aihao">
+        <option value="银行收款">银行收款</option>
+        <option value="支付宝收款">支付宝收款</option>
+        <option value="POJ收款">POJ收款</option>
+        <option value="微信收款">微信收款</option>
+        <option value="现金交纳">现金交纳</option>
+      </select>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">银行名</label>
+    <div class="layui-input-block">
+      <input type="text" name="bankName" th:value="${oldvip.bankName}==null?'':${oldvip.bankName}"  placeholder="请输入银行名" autocomplete="off" class="layui-input">
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">银行卡号</label>
+    <div class="layui-input-block">
+      <input type="text" name="bankCard" th:value="${oldvip.bankCard}==null?'':${oldvip.bankCard}"  placeholder="请输入银行卡号" autocomplete="off" class="layui-input">
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">客户省份</label>
+    <div class="layui-input-block">
+      <select name="position" lay-filter="aihao" class="province">
+        <option value="" th:if='${oldvip.position}==null'>请选择一个省份</option>
+        <option th:value="${oldvip.position}" th:if='${oldvip.position}!=null' th:text='${oldvip.position}'></option>
+      </select>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">推荐人名</label>
+    <div class="layui-input-block">
+      <input type="text" name="referName" th:value="${oldvip.referName}==null?'':${oldvip.referName}"  placeholder="请输入推荐人名,没有不填" autocomplete="off" class="layui-input">
+    </div>
+  </div>
+  <div class="layui-form-item" id='referArea' style="display:none">
+    <label class="layui-form-label">推荐人省份</label>
+    <div class="layui-input-block">
+      <select name="referArea" lay-verify="require" lay-filter="aihao" class="province">
+        <option value="" th:if='${oldvip.referArea}==null'>请选择一个省份</option>
+        <option th:value="${oldvip.referArea}" th:if='${oldvip.referArea}!=null' th:text="${oldvip.position}"></option>
+      </select>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">交易日期</label>
+    <div class="layui-input-block">
+      <input type="text" name="payTime" required placeholder="请选择交易日期" id='date' class="layui-input">
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <div class="layui-input-block">
+      <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+      <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+    </div>
+  </div>
+</form>
+ 
+<script>
+//Demo
+layui.use(['form','laydate'], function(){
+  var form = layui.form;
+  var laydate = layui.laydate;
+  var date='[[${oldvip.payTime}]]'==null?'':'[[${#dates.format(oldvip.payTime,"yyyy-MM-dd hh:mm:ss")}]]';
+  console.log('[[${oldvip.position}]]');
+  laydate.render({
+	    elem: '#date' //指定元素
+	    ,type:'datetime'
+	    ,format:'yyyy-MM-dd HH:mm:ss'
+	    ,value:date
+	   	,min: '2017-9-1 00:00:00'
+	   	,max:new Date().format('yyyy-MM-dd hh:mm:ss')
+	  });
+  //监听提交
+  form.on('submit(formDemo)', function(data){
+    layer.msg(JSON.stringify(data.field));
+    return true;
+  });
+});
+$(document).ready(function(){
+	var province=["","北京市","天津市","上海市","重庆市","河北省","山西省","内蒙古","辽宁省","吉林省","黑龙江省","江苏省","浙江省","安徽省","福建省","江西省","山东省","河南省","湖北省","湖南省","广东省","广西","海南省","四川省","贵州省","云南省","西藏","陕西省","甘肃省","青海省","宁夏","新疆","香港","澳门","台湾省"];
+	var option='';
+	province.forEach(function(curvalue,index,obj){
+		//console.log(curvalue);
+		if(curvalue==''||curvalue==null){	
+			option=option+'<option value=""'+curvalue+'>请选择省份</option>';
+			}
+		else
+			option=option+'<option value="'+curvalue+'">'+curvalue+'</option>';
+	});
+	
+	$(".province").append(option);
+	
+	$('input[name="referName"]').change(function(data){
+		if(data!=''){
+			$("#referArea").css('display','block');
+		}
+	});
+	var s=$("select[name='referArea']").val();
+	if(s!='') $("#referArea").css('display','block');
+});
+</script>
+</body>
+</html>

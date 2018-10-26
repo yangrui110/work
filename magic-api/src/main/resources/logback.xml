@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<appender name="consoleLog" class="ch.qos.logback.core.ConsoleAppender">
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>
+				%d - %msg%n
+			</pattern>
+		</layout>
+	</appender>
+	<appender name="fileConsole" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<encoder>
+			<pattern>
+				%msg%n
+			</pattern>
+		</encoder>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>
+				D://logback/api-%d.log
+			</fileNamePattern>
+		</rollingPolicy>
+	</appender>
+	
+	<root level="info">
+		<appender-ref  ref="consoleLog"/>
+	</root>
+</configuration>

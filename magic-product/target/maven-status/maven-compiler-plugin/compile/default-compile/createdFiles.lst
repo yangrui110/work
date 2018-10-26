@@ -1,0 +1,7 @@
+com\lvshou\magic\product\constant\SellConstant.class
+com\lvshou\magic\product\dao\ProductDao.class
+com\lvshou\magic\product\convert\ProductConvert.class
+com\lvshou\magic\product\vo\ProductVo.class
+com\lvshou\magic\product\serviceImpl\ProductServiceImpl.class
+com\lvshou\magic\product\service\ProductService.class
+com\lvshou\magic\product\entity\Product.class

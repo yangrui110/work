@@ -1,0 +1,5 @@
+com\lvshou\magic\referral\vo\ReferralVo.class
+com\lvshou\magic\referral\dao\ReferralDao.class
+com\lvshou\magic\referral\entity\Referral.class
+com\lvshou\magic\referral\serviceImpl\ReferralServiceImpl.class
+com\lvshou\magic\referral\service\ReferralService.class

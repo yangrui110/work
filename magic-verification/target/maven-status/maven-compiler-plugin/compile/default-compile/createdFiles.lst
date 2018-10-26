@@ -1,0 +1,15 @@
+com\lvshou\magic\verification\util\VerificationUtils.class
+com\lvshou\magic\verification\dao\VerificationDao.class
+com\lvshou\magic\verification\exception\CustomAccessDeniedHandler.class
+com\lvshou\magic\verification\util\MyX509TrustManager.class
+com\lvshou\magic\verification\serviceImpl\VerificationServerImpl.class
+com\lvshou\magic\verification\entity\SysRoleVerification.class
+com\lvshou\magic\verification\entity\Verification.class
+com\lvshou\magic\verification\service\VerificationService.class
+com\lvshou\magic\verification\dao\SysRoleDao.class
+com\lvshou\magic\verification\entity\SysRole.class
+com\lvshou\magic\verification\exception\AuthExceptionEntryPoint.class
+com\lvshou\magic\verification\service\SysRoleService.class
+com\lvshou\magic\verification\serviceImpl\SysRoleServiceImpl.class
+com\lvshou\magic\verification\exception\CustomOauthException.class
+com\lvshou\magic\verification\util\HttpRequest.class

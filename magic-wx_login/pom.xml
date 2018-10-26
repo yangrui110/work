@@ -1,0 +1,65 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>magic-wx_login</artifactId>
+  <packaging>jar</packaging>
+
+  <name>magic-wx_login</name>
+  <url>http://maven.apache.org</url>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <dependencies>
+  <dependency>
+	  <groupId>com.github.liyiorg</groupId>
+	  <artifactId>weixin-popular</artifactId>
+	  <version>2.8.17</version>
+	</dependency>
+  
+   <dependency>  
+        <groupId>org.projectlombok</groupId>  
+        <artifactId>lombok</artifactId>  
+    </dependency>  
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+	    <groupId>javax.servlet</groupId> 
+	   <artifactId>javax.servlet-api</artifactId> 
+	</dependency>
+    <dependency>
+    	<groupId>com.lvshou.magic</groupId>
+    	<artifactId>magic-user</artifactId>
+    	<version>0.0.1-SNAPSHOT</version>
+    </dependency>
+    <dependency>  
+          <groupId>com.google.zxing</groupId>  
+          <artifactId>core</artifactId>  
+          <version>2.1</version>  
+      </dependency>  
+      <!-- https://mvnrepository.com/artifact/com.google.zxing/javase -->  
+      <dependency>  
+          <groupId>com.google.zxing</groupId>  
+          <artifactId>javase</artifactId>  
+          <version>2.1</version>  
+      </dependency>
+		<dependency>
+	        <groupId>org.springframework.data</groupId>
+	        <artifactId>spring-data-redis</artifactId>
+	    </dependency>
+		<dependency>
+	        <groupId>redis.clients</groupId>
+	        <artifactId>jedis</artifactId>
+		</dependency>
+  </dependencies>
+  <parent>
+  	<groupId>com.lvshou.magic</groupId>
+  	<artifactId>magic-server</artifactId>
+  	<version>0.0.1-SNAPSHOT</version>
+  </parent>
+</project>

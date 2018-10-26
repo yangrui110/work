@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+<link rel="stylesheet" type="text/css" th:href="@{/lib/common/layui/css/layui.css}" media="all">
+<script type="text/javascript" th:src="@{/lib/common/layui/layui.js}"></script>
+<script type="text/javascript" th:src="@{/js/date.js}"></script>
+<script type="text/javascript" th:src="@{/lib/common/layui/lay/modules/jquery.js}"></script>
+<script type="text/javascript" th:src="@{/lib/common/layui/lay/modules/table.js}"></script>
+<script type="text/javascript" th:src="@{/lib/common/layui/lay/modules/layer.js}"></script>
+<style type="text/css">
+
+	body{overflow-y: scroll;}
+	.layui-table-cell{
+		height:60px;
+		ling-height:60px;
+	}
+	.layui-table-page{
+		margin-bottom: 24px;
+	}
+</style>
+<script type="text/html" id="op">
+  <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<script type="text/javascript">
+	var $=layui.jquery;
+	var finds_url="/admin/vipHistory/findAll";//设置所有的path路径
+	var table_id='tt';
+layui.use('table', function(){
+	  var table = layui.table;
+	  //第一个实例
+	  table.render({
+	    elem: '#'+table_id,
+	    url: finds_url ,//数据接口
+	    page: {
+	    	layout: ['prev', 'page', 'next', 'skip','limit', 'count'] ,//自定义分页布局
+	    	hash:'fenye',
+	    	groups: 1 ,//只显示 1 个连续页码
+	    	last: false //不显示尾页
+	    	
+	    },
+	    initSort: {
+	        field: 'numId' //排序字段，对应 cols 设定的各字段名
+	        ,type: 'asc' //排序方式  asc: 升序、desc: 降序、null: 默认排序
+	      },
+	    cols: [
+	    	[ //表头
+	      {field:'numId',title:'用户编号',align:'center',templet:function(value){
+	    	  return value.user.numId;
+	      }},
+ 		 {field:'name',title:'姓名',align:'center',templet:function(value){
+	    	  return value.user.name;
+	      }},
+ 		 {field:'phone',title:'手机号',align:'center',templet:function(value){
+	    	  return value.user.phone;
+	      }},
+ 		 
+ 		{field:'vipClass',title:'会员等级',align:'center',templet:function(value){
+ 			switch(value.vip){
+ 			case 1 :return '普通会员';
+ 			case 2: return "正式会员";
+ 			case 3:return "合伙人";
+ 			case 4: return "董事";
+ 			case 5: return "死会员";
+ 			case 6: return "预备合伙人";
+ 			default : return "非会员";
+ 			}
+ 		}},
+ 		  {field:'createTime',title:'创建时间',align:'center',templet:function(value){
+	 			if(value.createTime!=null){
+	 				 var date=new Date(value.createTime).format("yyyy-MM-dd hh:mm:ss");
+	 				 return date;
+	 			 }
+	 			 return value.createTime;
+	 		 }}
+	      
+	    ]
+	    	]
+	  }); 
+
+	  /**处理选中的数据*/
+	  var $ = layui.$, active = {
+		  
+		    reload: function(){
+		      var demoReload = $('#demoReload'); 
+		      //执行重载
+		      var select=$("select[name='modules']").val();
+		      var year=$("select[name='years']").val();
+		      var month=$("select[name='months']").val();
+		      var url='/admin/vipHistory/finds?year='+year+"&month="+month+"&type="+select;
+		      table.reload(table_id, {
+		        page: {
+		          curr: 1 //重新从第 1 页开始
+		        },
+		        url:url,
+		        method:'get'
+		      });
+		    }
+	  }
+
+	  $('.demoTable .layui-btn').on('click', function(){
+	    var type = $(this).data('type');
+	    active[type] ? active[type].call(this) : '';
+	  });
+	});
+	
+</script>
+</head>
+<body>
+
+<div class="demoTable" style="width:370px;margin:0 auto">
+  <div class="layui-inline">
+	  <div class="layui-input-inline">
+	    <select name="modules" lay-verify="required" lay-search="" style="height:38px">
+	      <option value="2" selected="">正式会员</option>
+	      <option value="3">合伙人</option>
+	      <option value="4">董事</option>
+	    </select>
+	  </div>
+  </div>
+  <div class="layui-inline">
+	  <div class="layui-input-inline">
+	    <select name="years" lay-verify="required" lay-search="" style="height:38px">
+	      <option value="2018" selected="">2018</option>
+	      <option value="2019">2019</option>
+	      <option value="2020">2020</option>
+	      <option value="2021">2021</option>
+	      <option value="2022">2022</option>
+	      <option value="2023">2023</option>
+	      <option value="2024">2024</option>
+	      <option value="2025">2025</option>
+	      <option value="2026">2026</option>
+	      <option value="2027">2027</option>
+	      <option value="2028">2028</option>
+	      <option value="2029">2029</option>
+	      <option value="2030">2030</option>
+	    </select>
+	  </div>
+  </div>
+  <div class="layui-inline">
+	  <div class="layui-input-inline">
+	    <select name="months" lay-verify="required" lay-search="" style="height:38px">
+	      <option value="1" selected="">1月份</option>
+	      <option value="2" >2月份</option>
+	      <option value="3">3月份</option>
+	      <option value="4" >4月份</option>
+	      <option value="5" >5月份</option>
+	      <option value="6">6月份</option>
+	      <option value="7" >7月份</option>
+	      <option value="8" >8月份</option>
+	      <option value="9" >9月份</option>
+	      <option value="10" >10月份</option>
+	      <option value="11" >11月份</option>
+	      <option value="12" >12月份</option>
+	    </select>
+	  </div>
+  </div>
+  <button class="layui-btn" data-type="reload">搜索</button>
+</div>
+
+<table id="tt" lay-filter="demo">
+</table>
+	
+</body>
+</html>

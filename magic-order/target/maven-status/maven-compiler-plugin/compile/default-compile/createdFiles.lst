@@ -1,0 +1,11 @@
+com\lvshou\magic\order\vo\OrderMainVo.class
+com\lvshou\magic\order\dao\OrderMainDao.class
+com\lvshou\magic\order\entity\OrderDetail.class
+com\lvshou\magic\order\service\OrderDetailService.class
+com\lvshou\magic\order\service\OrderMainService.class
+com\lvshou\magic\order\convert\OrderMainConvert.class
+com\lvshou\magic\order\serviceImpl\OrderDetailServiceImpl.class
+com\lvshou\magic\order\dao\OrderDetailDao.class
+com\lvshou\magic\order\mainEnum\OrderStatus.class
+com\lvshou\magic\order\serviceImpl\OrderMainServiceImpl.class
+com\lvshou\magic\order\entity\OrderMain.class

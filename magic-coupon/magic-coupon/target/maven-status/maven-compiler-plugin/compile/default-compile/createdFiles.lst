@@ -1,0 +1,11 @@
+com\lvshou\magic\dao\CouponDao.class
+com\lvshou\magic\statics\Status.class
+com\lvshou\magic\convert\CouponConvert.class
+com\lvshou\magic\entity\UserCoupon.class
+com\lvshou\magic\serviceImpl\UserCouponServiceImpl.class
+com\lvshou\magic\vo\CouponVo.class
+com\lvshou\magic\serviceImpl\CouponServiceImpl.class
+com\lvshou\magic\service\UserCouponService.class
+com\lvshou\magic\entity\Coupon.class
+com\lvshou\magic\dao\UserCouponDao.class
+com\lvshou\magic\service\CouponService.class

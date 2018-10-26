@@ -1,0 +1,5 @@
+com\lvshou\magic\operation\serviceImpl\OperationServiceImpl.class
+com\lvshou\magic\operation\entity\Operation.class
+com\lvshou\magic\operation\service\OperationService.class
+com\lvshou\magic\operation\dao\OperationDao.class
+com\lvshou\magic\operation\statics\Constant.class

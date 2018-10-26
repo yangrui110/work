@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" th:href="@{/css/icon.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/css/xidi.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/css/base.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/css/home.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/layui/css/layui.css}">
+<script type="text/javascript" th:src="@{/layui/layui.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/date.js}"></script>
+<script type="text/javascript" th:src="@{/js/up.js}"></script>
+<script type="text/javascript" th:src="@{/js/area.js}"></script>
+
+<script type="text/javascript">
+layui.use('upload', function(){
+	  var upload = layui.upload;
+	   
+	  //执行实例
+	  var uploadInst = upload.render({
+	    elem: '#upImg' //绑定元素
+	    ,url: '/admin/batch/upload' //上传接口
+	    ,done: function(data){
+	      //上传完毕回调
+	    	$("input[name='pics']").attr("value",data.data);
+			$("img[name='img']").attr("src",data.data);
+	    }
+	    ,error: function(){
+	      //请求异常回调
+	    }
+	  });
+	});
+</script>
+</head>
+<body>
+	<section class="aui-content">
+            <div style="height:20px;"></div>
+            
+            <div class="aui-content-up">
+                <form action="/admin/advertise/save" name="form1" method="post">
+                <input type="hidden" th:value="${advertise.id}==null?'':${advertise.id}" name="id">
+                   
+                    <div class="aui-content-up-form">
+                        <h2 th:text="${advertise.id}==null?'增加新图片':'修改图片的信息'"></h2>
+                    </div>
+                     <div class="aui-form-group clear">
+                        <label class="aui-label-control">
+                                                                                                  排序<em>*</em>
+                        </label>
+                        <div class="aui-form-input">
+                            <input type="text" class="aui-form-control-two" name="sort" id="2" placeholder="请输入商品序号" th:value="${advertise.sort}==null?0:${advertise.sort}"/>
+                            <span class="tips" id="sort">商品图的排序号</span>
+                        </div>
+                    </div>
+                    <div class="aui-form-group clear">
+                        <label class="aui-label-control">
+                           	  图片类型<em>*</em>
+                        </label>
+                        <div class="aui-form-input">
+                            <select class="aui-form-control-two" name="type" >
+                           		<option value="1" th:selected="${advertise.type}==1?selected:false">广告轮播图</option>
+                            	<option value="2" th:selected="${advertise.type}==2?selected:false">背景图</option>
+                            	<option value="3" th:selected="${advertise.type}==3?selected:false">简介介绍图</option>
+                            </select>
+                            <span class="tips" id="divname">选择相应的图片类型</span>
+                        </div>
+                    </div>
+                    <div class="aui-form-group clear">
+                        <label class="aui-label-control">
+                           	  图片<em>*</em>
+                        </label>
+                        <div class="aui-form-input">
+                           <div><img id="upImg" name ="img" style="width:120px;height:120px" th:src="${advertise.pics}==null?'http://admin.wanxidi.com.cn/admin/e8fe60cce3aa472fb4c0956b88b00379.jpg':${advertise.pics}"><input th:type="hidden" name="pics" th:value="${advertise.pics}==null?'http://api.wanxidi.com.cn/a09896c96e054620a4b1b747edfe79cf.png':${advertise.pics}"></div>
+                           <span class="tips" id="divname">点击图片上传</span>
+                        </div>
+                    </div>
+                    <div class="aui-form-group clear">
+                        <label class="aui-label-control">
+                                                                                                  描述<em>*</em>
+                        </label>
+                        <div class="aui-form-input">
+                            <input type="text" class="aui-form-control-two" name="describetion" id="2" placeholder="请输入图片描述" th:value="${advertise.describetion}==null?'':${advertise.describetion}"/>
+                            <span class="tips">图片的描述信息，可以不填写</span>
+                        </div>
+                    </div>
+
+                    <div class="aui-btn-default">
+		                <button class="aui-btn aui-btn-account" type="submit">保存并提交</button>
+		            </div>
+                </form>
+            </div>
+            
+        </section>
+</body>
+</html>

@@ -1,0 +1,6 @@
+com\lvshou\magic\serviceImpl\AdvertiseImpl.class
+com\lvshou\magic\convert\AdvertiseConvert.class
+com\lvshou\magic\vo\AdvertiseVo.class
+com\lvshou\magic\service\AdvertiseService.class
+com\lvshou\magic\dao\AdvertiseDao.class
+com\lvshou\magic\entity\Advertise.class

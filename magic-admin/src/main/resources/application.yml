@@ -1,0 +1,49 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/distribution?characterEncoding=utf-8
+    username: root
+    password: 134167
+  jpa:
+    show-sql: false
+  mvc:
+    static-path-pattern: /**
+    date-format: yyyy-MM-dd HH:mm
+  resources:
+    static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,file:D:/FileUpload/
+  http:
+    encoding:
+      charset: utf-8
+      enabled: true
+      force: true
+  thymeleaf:
+    cache: false
+  jackson:
+    date-format: yyyy-MM-dd HH:mm
+    time-zone:
+      GMT+8
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 100MB
+server:
+  maxHttpHeaderSize: 10240000
+  servlet:
+    context-path: /admin/
+  tomcat:
+    uri-encoding: utf-8
+    maxHttpHeaderSize: 10240000
+    maxHttpPostSize: 10240000
+lvshou: 
+  security: 
+    login_url: http://admin.wanxidi.com.cn/authen/login
+    prefix_file_path: http://admin.wanxidi.com.cn/admin/
+    server_local_file_path: D:\\FileUpload\\
+  user: 
+    code_path: http://www.sanguohf.top/wechat/share
+    prefix_local_path: D:\\FileUpload\\
+  wxpay: 
+    pay_notify: http://api.wanxidi.com.cn/wechat/notify/
+    charge_notify: http://api.wanxidi.com.cn/wechat/chargeNotify/
+    prefix_path: D:\\FileUpload\\
+    

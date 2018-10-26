@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" th:href="@{/css/icon.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/css/xidi.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/css/base.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/css/home.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/layui/css/layui.css}">
+<script type="text/javascript" th:src="@{/layui/layui.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/date.js}"></script>
+<script type="text/javascript" th:src="@{/js/up.js}"></script>
+<script type="text/javascript" th:src="@{/js/area.js}"></script>
+<script type="text/javascript">
+layui.use('upload', function(){
+	  var upload = layui.upload;
+	   
+	  //执行实例
+	  var uploadInst = upload.render({
+	    elem: '#upImg' //绑定元素
+	    ,url: '/admin/batch/upload' //上传接口
+	    ,done: function(data){
+	      //上传完毕回调
+	    	$("input[name='icon']").attr("value",data.data);
+			$("img[name='img']").attr("src",data.data);
+	    }
+	    ,error: function(){
+	      //请求异常回调
+	    }
+	  });
+
+	  var uploadInst = upload.render({
+		    elem: '#upDetail' //绑定元素
+		    ,url: '/admin/batch/upload' //上传接口
+		    ,done: function(data){
+		      //上传完毕回调
+		    	$("input[name='detail']").attr("value",data.data);
+				$("img[name='detail']").attr("src",data.data);
+		    }
+		    ,error: function(){
+		      //请求异常回调
+		    }
+		  });
+	});
+
+	//验证姓名
+    function checkna(){
+        na=form1.name.value;
+        if( na.length <1 || na.length >6)
+        {
+            divname.innerHTML='<font class="tips_false">长度是1~6个字符</font>';
+        }else{
+            divname.innerHTML='<font class="tips_true">输入正确</font>';
+        }
+    }
+    function checkem(){
+        na=form1.mail.value;
+        if( na.length <1)
+        {
+            divemail.innerHTML='<font class="tips_false">请输入邮箱值</font>';
+        }else{
+            divemail.innerHTML='<font class="tips_true">输入正确</font>';
+        }
+    }
+    function checkreferral(){
+    	/*na=form1.referralCode.value;
+        if( na.length <1)
+        {
+            divreferralCode.innerHTML='<font class="tips_false">请输入推荐码</font>';
+        }else{
+            divreferralCode.innerHTML='<font class="tips_true">输入正确</font>';
+        }*/
+        $("input[name='referralCode']").hide();
+    }
+    //验证手机号码
+    function checkpsd1(){
+       na=form1.phone.value;
+        if( na.length <11 || na.length >11)
+        {
+            phone.innerHTML='<font class="tips_false">必须是11位的数字</font>';
+        }else{
+            phone.innerHTML='<font class="tips_true">输入正确</font>';
+        }
+    }
+</script>
+</head>
+<body>
+	<section class="aui-content">
+            <div style="height:20px;"></div>
+            
+            <div class="aui-content-up">
+                <form action="/admin/product/save" name="form1" method="post">
+                <input type="hidden" th:value="${product.id}==null?'':${product.id}" name="id">
+                    <div class="aui-content-up-form">
+                        <h2 th:text="${product.id}==null?'增加新产品':'修改产品'+${product.name}+'的信息'"></h2>
+                    </div>
+                    <div class="aui-form-group clear">
+                        <label class="aui-label-control">
+                           	  产品名<em>*</em>
+                        </label>
+                        <div class="aui-form-input">
+                            <input type="text" class="aui-form-control-two" name="name" onBlur="checkna()" required id="1" placeholder="请输入产品名" th:value="${product.name}==null?'':${product.name}">
+                            <span class="tips" id="divname"></span>
+                        </div>
+                    </div>
+                    <div class="aui-form-group clear">
+                        <label class="aui-label-control">
+                              	价格<em>*</em>
+                        </label>
+                        <div class="aui-form-input">
+                            <input type="text" class="aui-form-control-two" name="price" id="2" placeholder="请输入产品价格" th:value="${product.price}==null?'':${product.price}" required/>
+                            <span class="tips" id="divname">产品价格</span>
+                        </div>
+                    </div>
+                    <div class="aui-form-group clear">
+                        <label class="aui-label-control">
+                              	vip价格<em>*</em>
+                        </label>
+                        <div class="aui-form-input">
+                            <input type="text" class="aui-form-control-two" name="vipPrice" id="2" placeholder="请输入vip产品价格" th:value="${product.vipPrice}==null?'':${product.vipPrice}" required/>
+                            <span class="tips" id="divname">vip价格</span>
+                        </div>
+                    </div>
+                    <div class="aui-form-group clear">
+                        <label class="aui-label-control">
+                              	兑换所需积分<em>*</em>
+                        </label>
+                        <div class="aui-form-input">
+                            <input type="text" class="aui-form-control-two" name="integral" id="2" placeholder="兑换所需积分" th:value="${product.integral}==null?'':${product.integral}" required/>
+                            <span class="tips" id="divname">能够积分兑换请输入积分数量</span>
+                        </div>
+                    </div>
+                    <div class="aui-form-group clear">
+                        <label class="aui-label-control">
+                           	  是否可以积分兑换<em>*</em>
+                        </label>
+                        <div class="aui-form-input">
+                            <select class="aui-form-control-two" name="changeStatus">
+                            	<option value="1" th:selected="${product.changeStatus}==1?selected:false">是</option>
+                            	<option value="2" th:selected="${product.changeStatus}==2?selected:false">否</option>
+                            	
+                            </select>
+                            <span class="tips" id="divname">积分兑换状态</span>
+                        </div>
+                    </div>
+                    <div class="aui-form-group clear">
+                        <label class="aui-label-control">
+                              	库存<em>*</em>
+                        </label>
+                        <div class="aui-form-input">
+                            <input type="text" class="aui-form-control-two" name="stock" id="2" placeholder="请输入产库存量" th:value="${product.stock}==null?'':${product.stock}" required/>
+                            <span class="tips" id="divname">库存量</span>
+                        </div>
+                    </div>
+                    <div class="aui-form-group clear">
+                        <label class="aui-label-control">
+                           	  产品状态<em>*</em>
+                        </label>
+                        <div class="aui-form-input">
+                            <select class="aui-form-control-two" name="status">
+                           		<option value="1" th:selected="${product.status}==1?selected:false">正常销售</option>
+                            	<option value="2" th:selected="${product.status}==2?selected:false">货源不足</option>
+                            	<option value="3" th:selected="${product.status}==3?selected:false">商品已经下架</option>
+                            	
+                            </select>
+                            <span class="tips" id="divname">选择相应的产品状态</span>
+                        </div>
+                    </div>
+                    <div class="aui-form-group clear">
+                        <label class="aui-label-control">
+                           	  产品图片<em>*</em>
+                        </label>
+                        <div class="aui-form-input">
+                            <div style="width:100%;height: 100px;"><img id="upImg" alt="产品图标" th:src="${product.icon}==null?'http://admin.wanxidi.com.cn/admin/e8fe60cce3aa472fb4c0956b88b00379.jpg':${product.icon}" style="wdith:100px;height: 100px;" name="img"></div>
+                            <input class="aui-form-control-two" name="icon" id="2" th:value="${product.icon}==null?'http://admin.wanxidi.com.cn/admin/e8fe60cce3aa472fb4c0956b88b00379.jpg':${product.icon}" type="hidden"/>
+                            
+                           <span class="tips" id="divemail">产品图片</span>
+                        </div>
+                    </div>
+                    <div class="aui-form-group clear">
+                        <label class="aui-label-control">
+                           	  产品详情图<em>*</em>
+                        </label>
+                        <div class="aui-form-input">
+                            <div style="width:100%;height: 100px;"><img id="upDetail" alt="产品详情" th:src="${product.detail}==null?'http://admin.wanxidi.com.cn/admin/e8fe60cce3aa472fb4c0956b88b00379.jpg':${product.detail}" style="wdith:100px;height: 100px;" name="detail"></div>
+                            <input class="aui-form-control-two" name="detail" id="2" th:value="${product.detail}==null?'http://admin.wanxidi.com.cn/admin/e8fe60cce3aa472fb4c0956b88b00379.jpg':${product.detail}" type="hidden"/>
+                            
+                           <span class="tips" id="divemail">产品图片</span>
+                        </div>
+                    </div>
+                    <div class="aui-form-group clear">
+                        <label class="aui-label-control">
+                           	  描述 <em>*</em>
+                        </label>
+                        <div class="aui-form-input">
+                             <input type="text" class="aui-form-control-two" name="evaluate" id="1" placeholder="请输入产品描述信息" th:value="${product.evaluate}==null?'':${product.evaluate}">
+                            <span class="tips" id="divname">描述信息</span>
+                        </div>
+                    </div>
+                    <div class="aui-btn-default">
+		                <button class="aui-btn aui-btn-account" type="submit">保存并提交</button>
+		            </div>
+                </form>
+            </div>
+            
+        </section>
+</body>
+</html>

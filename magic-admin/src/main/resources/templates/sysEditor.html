@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" th:href="@{/css/easyui.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/css/icon.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/css/xidi.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/css/base.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/css/home.css}">
+<script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.easyui.min.js}"></script>
+</head>
+<body>
+
+	<section class="aui-content">
+            <div style="height:20px;"></div>
+            
+            <div class="aui-content-up">
+                <form action="/admin/sys/ups" name="form1" method="post">
+                <input type="hidden" th:value="${sys.id}==null?'':${sys.id}" name="id">
+                    <div class="aui-content-up-form">
+                        <h2 th:text="修改系统设置的信息"></h2>
+                    </div>
+                    <div class="aui-form-group clear">
+                        <label class="aui-label-control">
+                           	  分销起始资金 <em>*</em>
+                        </label>
+                        <div class="aui-form-input">
+                            <input type="number" class="aui-form-control-two" name="basic" onBlur="checkna()" required id="1" placeholder="请输入具体数额" th:value="${sys.basic}==null?'':${sys.basic}">
+                            <span class="tips" id="divname">数值</span>
+                        </div>
+                    </div>
+                    <div class="aui-form-group clear">
+                        <label class="aui-label-control">
+                                                                                                   平台资金数<em>*</em>
+                        </label>
+                        <div class="aui-form-input">
+                            <input type="text" class="aui-form-control-two" name="platForm" id='2' th:value="${sys.platForm}==null?'':${sys.platForm}"/>
+                            <span class="tips" id="phone">平台资金池,最小值为1</span>
+                        </div>
+                    </div>
+                    <div class="aui-form-group clear">
+                        <label class="aui-label-control">
+                           	 需要推荐人数<em>*</em>
+                        </label>
+                        <div class="aui-form-input">
+                            <input type="number" class="aui-form-control-two" name="referNum" onBlur="checkem()" required id="1" placeholder="请输入具体人数" th:value="${sys.referNum}==null?'':${sys.referNum}">
+                            <span class="tips" id="divemail">成为合伙人之前，第二个月需要新增的人数</span>
+                        </div>
+                    </div>
+                   <div class="aui-form-group clear">
+                        <label class="aui-label-control">
+                           	 成为会员所需要的金额<em>*</em>
+                        </label>
+                        <div class="aui-form-input">
+                            <input type="number" class="aui-form-control-two" name="vipMoney" onBlur="checkem()" required id="1" placeholder="请输入具体金额" th:value="${sys.vipMoney}==null?'':${sys.vipMoney}">
+                            <span class="tips" id="divemail">当单笔订单的金额大于多少时直接升级成会员</span>
+                        </div>
+                    </div>
+                    <div class="aui-btn-default">
+		                <button class="aui-btn aui-btn-account" type="submit">保存并提交</button>
+		            </div>
+                </form>
+            </div>
+            
+        </section>
+</body>
+</html>

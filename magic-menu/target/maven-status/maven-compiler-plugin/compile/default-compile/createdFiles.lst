@@ -1,0 +1,4 @@
+com\lvshou\magic\serviceImpl\MenuServiceImpl.class
+com\lvshou\magic\entity\Menu.class
+com\lvshou\magic\service\MenuService.class
+com\lvshou\magic\dao\MenuDao.class

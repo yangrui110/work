@@ -1,0 +1,15 @@
+F:\softData\eclipse\work\work\magic-verification\src\main\java\com\lvshou\magic\verification\entity\SysRole.java
+F:\softData\eclipse\work\work\magic-verification\src\main\java\com\lvshou\magic\verification\util\VerificationUtils.java
+F:\softData\eclipse\work\work\magic-verification\src\main\java\com\lvshou\magic\verification\entity\SysRoleVerification.java
+F:\softData\eclipse\work\work\magic-verification\src\main\java\com\lvshou\magic\verification\dao\SysRoleDao.java
+F:\softData\eclipse\work\work\magic-verification\src\main\java\com\lvshou\magic\verification\service\SysRoleService.java
+F:\softData\eclipse\work\work\magic-verification\src\main\java\com\lvshou\magic\verification\util\HttpRequest.java
+F:\softData\eclipse\work\work\magic-verification\src\main\java\com\lvshou\magic\verification\exception\AuthExceptionEntryPoint.java
+F:\softData\eclipse\work\work\magic-verification\src\main\java\com\lvshou\magic\verification\service\VerificationService.java
+F:\softData\eclipse\work\work\magic-verification\src\main\java\com\lvshou\magic\verification\entity\Verification.java
+F:\softData\eclipse\work\work\magic-verification\src\main\java\com\lvshou\magic\verification\util\MyX509TrustManager.java
+F:\softData\eclipse\work\work\magic-verification\src\main\java\com\lvshou\magic\verification\exception\CustomAccessDeniedHandler.java
+F:\softData\eclipse\work\work\magic-verification\src\main\java\com\lvshou\magic\verification\serviceImpl\VerificationServerImpl.java
+F:\softData\eclipse\work\work\magic-verification\src\main\java\com\lvshou\magic\verification\exception\CustomOauthException.java
+F:\softData\eclipse\work\work\magic-verification\src\main\java\com\lvshou\magic\verification\dao\VerificationDao.java
+F:\softData\eclipse\work\work\magic-verification\src\main\java\com\lvshou\magic\verification\serviceImpl\SysRoleServiceImpl.java

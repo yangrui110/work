@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+<link rel="stylesheet" type="text/css" th:href="@{/lib/common/layui/css/layui.css}" media="all">
+<script type="text/javascript" th:src="@{/lib/common/layui/layui.js}"></script>
+<script type="text/javascript" th:src="@{/js/date.js}"></script>
+<script type="text/javascript" th:src="@{/lib/common/layui/lay/modules/jquery.js}"></script>
+<script type="text/javascript" th:src="@{/lib/common/layui/lay/modules/table.js}"></script>
+<script type="text/javascript" th:src="@{/lib/common/layui/lay/modules/layer.js}"></script>
+<style type="text/css">
+
+	body{overflow-y: scroll;}
+	.layui-table-cell{
+		height:60px;
+		ling-height:60px;
+	}
+	.layui-table-page{
+		margin-bottom: 24px;
+	}
+</style>
+<script type="text/html" id="op">
+{{# if(d.status==0){ }}
+  <a class="layui-btn layui-btn-xs" lay-event="edit">同意</a>
+  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">驳回</a>
+{{#} }}
+</script>
+<script type="text/javascript">
+	var $=layui.jquery;
+	var finds_url="/admin/operation/withdrawlists?status=0",deleteId_url='/admin/money/withdrawDef',deleteIds_url='deleteAll',editor_url='/admin/money/withdrawAgree?id=',defas_url='/admin/money/withdrawAgree?id=';//设置所有的path路径
+	var table_id='tt';
+layui.use('table', function(){
+	  var table = layui.table;
+	  //第一个实例
+	  table.render({
+	    elem: '#'+table_id,
+	    url: finds_url ,//数据接口
+	    page: {
+	    	layout: ['prev', 'page', 'next', 'skip','limit', 'count'] ,//自定义分页布局
+	    	hash:'fenye',
+	    	groups: 1 ,//只显示 1 个连续页码
+	    	last: false //不显示尾页
+	    	
+	    },
+	    initSort: {
+	        field: 'sort' //排序字段，对应 cols 设定的各字段名
+	        ,type: 'asc' //排序方式  asc: 升序、desc: 降序、null: 默认排序
+	      },
+	    cols: [
+	    	[ //表头
+	      {field:'numId',title:'用户编号',width:180,align:'center'},
+ 		 {field:'name',title:'用户名',width:180,align:'center'},
+ 		 {field:'phone',title:'用户手机号',width:180,align:'center'},
+ 		 {field:'operate',title:'操作',align:'center',templet:function(value){
+ 			 switch(value.operate){
+ 			 case "consume":return "消费";
+ 			 case "withdraw":return "提现";
+ 			 }
+ 		 }},
+ 		 {field:'money',title:'金额',align:'center',width:180},
+ 		 {field:'describetion',title:'描述',align:'center',width:100},
+ 		  {field:'createTime',title:'发起审核时间',align:'center',width:180,templet:function(value){
+	 			if(value.createTime!=null){
+	 				 var date=new Date(value.createTime).format("yyyy-MM-dd hh:mm:ss");
+	 				 return date;
+	 			 }
+	 			 return value.createTime;
+	 		 }},
+				 {field:'updateTime',title:'审核完毕时间',width:180,align:'center',templet:function(value){
+					if(value.updateTime!=null){
+		 				 var date=new Date(value.updateTime).format("yyyy-MM-dd hh:mm:ss");
+		 				 return date;
+	 			 	}
+	 			 return value.updateTime;
+	 		 }},
+	       {field: 'operate',title: '操作', align:'center',toolbar:'#op'}
+	      
+	    ]
+	    	]
+	  }); 
+	  /**
+	  监听工具条的响应事件
+	  */
+	  table.on('tool(demo)', function(obj){
+		    var data = obj.data;
+		    if(obj.event === 'detail'){
+		      layer.msg('ID：'+ data.id + ' 的查看操作');
+		    } else if(obj.event === 'del'){
+		      layer.confirm('确定驳回么？', function(index){
+		        obj.del();
+		        $.ajax({
+					type: "get",
+				    url: deleteId_url+"?id="+data.id,
+				    success: function(msg){
+				    	alert("已驳回用户"+data.user.name+"提现"+data.money+"的申请");
+				    }
+				});
+		        layer.close(index);
+		      });
+		    } else if(obj.event === 'edit'){
+		      //layer.alert('编辑行：<br>'+ JSON.stringify(data))
+		    	//window.location.href=editor_url+data.id;
+		    	layer.confirm('确定同意么？', function(index){
+			        obj.del();
+			        $.ajax({
+						type: "get",
+					    url: defas_url+data.id,
+					    success: function(msg){
+					    	alert("已同意用户"+data.user.name+"提现的申请");
+					    }
+					});
+			        layer.close(index);
+			      });
+		    }
+		  });
+	  /**处理选中的数据*/
+	  var $ = layui.$, active = {
+		    reload: function(){
+		      var demoReload = $('#demoReload'); 
+		      var status=$("select[name='status']").val();
+		      //执行重载
+		      var select=$("select[name='modules']").val();
+		      var date= $('#monthReward'); 
+		      var url='/admin/operation/withdrawlists';
+		      if(select=='numId'){
+		      	url=url+"?numId="+demoReload.val()+"&status="+status;
+		      }else if(select=='name'){
+		      	url=url+"?name="+demoReload.val()+"&status="+status;
+		      }else if(select=='phone'){
+		      	url=url+"?phone="+demoReload.val()+"&status="+status;
+		      }else if(select=='time'){
+		      	url=url+"?date="+date.val()+"&status="+status;
+		      }
+		      table.reload(table_id, {
+		        page: {
+		          curr: 1 //重新从第 1 页开始
+		        },
+		        url:url,
+		        method:'get'
+		      });
+		    },
+		    export1:function(){
+		    	var date=$("#monthReward").val();
+		    	var status=$("select[name='status']").val();
+		    	if(date==''){
+		    		layer.open({
+	    			  title: '提示'
+	    			  ,content: '您没有输入日期，您将导出所有月份的【'+getStatus(status)+'】的记录值，如果要继续导出，请点【确定】'
+	    			  ,btn:['确定','取消']
+	    			  ,yes:function(index){layer.close(index);window.open("/admin/operation/export?status="+status);}
+	    			});
+		    	}else window.open("/admin/operation/export?date="+date+"&status="+status);
+		    }
+	  }
+	  $("#options").change(function(){
+		  var value=$("#options").val();
+		  if(value=='time'){
+			  $("#demoReload").hide();
+			  $("#monthReward").show();
+		  }else {
+			  $("#demoReload").show();
+			  $("#monthReward").hide();
+			  $("#monthReward").val('');
+		  }
+	  });
+	  $('.buttons .layui-btn').on('click', function(){
+		    var type = $(this).data('type');
+		    active[type] ? active[type].call(this) : '';
+		  });
+	  $('.demoTable .layui-btn').on('click', function(){
+		    var type = $(this).data('type');
+		    active[type] ? active[type].call(this) : '';
+		  });
+	  $(function(){
+	    	$('#monthReward').datetimepicker({
+	    		format:'Y-m',
+	    		maxDate:""+new Date(),
+	    		lang:'ch',
+	    		timepicker:false,
+	    		datepicker:false
+	    	});
+	    })
+});
+	function getStatus(status){
+		if(status=='0')
+			return '待审核';
+		else if(status=='1')
+			return "已同意";
+		else if(status=='2')
+			return '已驳回';
+		else return '';
+	}
+</script>
+</head>
+<body>
+<div class="demoTable" style="width:450px;margin:0 auto">
+  <div class="layui-inline">
+	  <div class="layui-input-inline">
+	    <select name="modules" lay-verify="required" lay-search="" style="height:38px" id="options">
+	      <option value="numId" selected="">用户编号</option>
+	      <option value="name">用户名</option>
+	      <option value="phone">用户手机号</option>
+	      <option value="time">按月查询</option>
+	    </select>
+	  </div>
+	  <div class="layui-input-inline">
+	    <select name="status" lay-verify="required" lay-search="" style="height:38px" id="options">
+	      <option value="0" selected="">待审批</option>
+	      <option value="1">已同意</option>
+	      <option value="2">已驳回</option>
+	    </select>
+	  </div>
+  </div>
+  <div class="layui-inline">
+	  <input type="text" class="layui-input" name="monthReward" id="monthReward" placeholder="填写格式:2018-10" style="display:none;"/>
+  </div>
+  <div class="layui-inline">
+    <input class="layui-input" name="id" id="demoReload" autocomplete="off">
+  </div>
+  <button class="layui-btn" data-type="reload">搜索</button>
+</div>
+<div class="buttons">
+<button class="layui-btn layui-btn-radius layui-btn-normal" data-type="export1">导出数据</button>
+</div>
+<table id="tt" lay-filter="demo">
+</table>
+</body>
+</html>

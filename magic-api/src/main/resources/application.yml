@@ -1,0 +1,36 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/distribution?characterEncoding=utf-8&useUnicode=true
+    username: root
+    password: 134167
+    dbcp2:
+      max-idle: 200
+      min-idle: 100
+  mvc:
+    static-path-pattern: /**
+  resources:
+    static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,file:D:/FileUpload/
+  jpa:
+    show-sql: true
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    jedis:
+      pool:
+        max-active: 200
+server:
+  port: 8181
+lvshou: 
+  security:
+    login_url: http://api.wanxidi.com.cn/authen/login
+    prefix_file_path: http://api.wanxidi.com.cn/
+    server_local_file_path: D:\\FileUpload\\
+    sysId: 098764
+  user: 
+    code_path: http://api.wanxidi.com.cn/wechat/share
+    prefix_local_path: D:\\FileUpload\\
+  wxpay: 
+    pay_notify: http://api.wanxidi.com.cn/wechat/notify/
+    charge_notify: http://api.wanxidi.com.cn/wechat/chargeNotify/
+    prefix_path: D:\\FileUpload\\

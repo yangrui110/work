@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+<link rel="stylesheet" type="text/css" th:href="@{/lib/common/layui/css/layui.css}" media="all">
+<script type="text/javascript" th:src="@{/lib/common/layui/layui.js}"></script>
+<script type="text/javascript" th:src="@{/js/date.js}"></script>
+<script type="text/javascript" th:src="@{/lib/common/layui/lay/modules/jquery.js}"></script>
+<script type="text/javascript" th:src="@{/lib/common/layui/lay/modules/table.js}"></script>
+<script type="text/javascript" th:src="@{/lib/common/layui/lay/modules/layer.js}"></script>
+<style type="text/css">
+
+	body{overflow-y: scroll;}
+	.layui-table-cell{
+		height:60px;
+		ling-height:60px;
+	}
+	.layui-table-page{
+		margin-bottom: 24px;
+	}
+</style>
+<script type="text/html" id="op">
+  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="edit">编辑</a>
+</script>
+
+<script type="text/javascript">
+	var $=layui.jquery;
+	var finds_url="/admin/sys/find",editor_url='/admin/sys/editor/';//设置所有的path路径
+	var table_id='tt';
+layui.use('table', function(){
+	  var table = layui.table;
+	  //第一个实例
+	  table.render({
+	    elem: '#'+table_id,
+	    url: finds_url ,//数据接口
+	    page: {
+	    	layout: ['prev', 'page', 'next', 'skip','limit', 'count'] ,//自定义分页布局
+	    	hash:'fenye',
+	    	groups: 1 ,//只显示 1 个连续页码
+	    	last: false //不显示尾页
+	    	
+	    },
+	    cols: [
+	    	[ //表头
+ 		 {field:'basic',title:'分销的起始资金',align:'center'},
+ 		 {field:'platForm',title:'平台资金数',align:'center'},
+ 		 {field:'referNum',title:'需要新增人员数',align:'center'},
+ 		{field:'vipMoney',title:'成为会员所需要的金额',align:'center'},
+	       {field: 'operate',title: '操作', align:'center',toolbar:'#op'}
+	      
+	    ]
+	    	]
+	  }); 
+	  /**
+	  监听工具条的响应事件
+	  */
+	  table.on('tool(demo)', function(obj){
+		    var data = obj.data;
+		    if(obj.event === 'detail'){
+		      layer.msg('ID：'+ data.id + ' 的查看操作');
+		    } else if(obj.event === 'del'){
+		      layer.confirm('确定删除么？', function(index){
+		        obj.del();
+		        $.ajax({
+					type: "delete",
+				    url: deleteId_url+data.id,
+				    success: function(msg){
+				    }
+				});
+		        layer.close(index);
+		      });
+		    } else if(obj.event === 'edit'){
+		      //layer.alert('编辑行：<br>'+ JSON.stringify(data))
+		    	window.location.href=editor_url;
+		    }
+		  });
+	  /**处理选中的数据*/
+	  var $ = layui.$;
+	  $('.buttons .layui-btn').on('click', function(){
+		    var type = $(this).data('type');
+		    active[type] ? active[type].call(this) : '';
+		  });
+	  $('.demoTable .layui-btn').on('click', function(){
+	    var type = $(this).data('type');
+	    active[type] ? active[type].call(this) : '';
+	  });
+	});
+	
+</script>
+</head>
+<body>
+<table id="tt" lay-filter="demo">
+</table>
+	
+</body>
+</html>

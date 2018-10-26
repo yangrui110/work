@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+<link rel="stylesheet" type="text/css" th:href="@{/lib/common/layui/css/layui.css}" media="all">
+<script type="text/javascript" th:src="@{/lib/common/layui/layui.js}"></script>
+<script type="text/javascript" th:src="@{/js/date.js}"></script>
+<script type="text/javascript" th:src="@{/lib/common/layui/lay/modules/jquery.js}"></script>
+<script type="text/javascript" th:src="@{/lib/common/layui/lay/modules/table.js}"></script>
+<script type="text/javascript" th:src="@{/lib/common/layui/lay/modules/layer.js}"></script>
+<style type="text/css">
+
+	body{overflow-y: scroll;}
+	.layui-table-cell{
+		height:60px;
+		ling-height:60px;
+	}
+	.layui-table-page{
+		margin-bottom: 24px;
+	}
+</style>
+<script type="text/javascript">
+	var $=layui.jquery;
+	var finds_url="/admin/operation/withdrawlists?status=1";//设置所有的path路径
+	var table_id='tt';
+layui.use('table', function(){
+	  var table = layui.table;
+	  //第一个实例
+	  table.render({
+	    elem: '#'+table_id,
+	    url: finds_url ,//数据接口
+	    page: {
+	    	layout: ['prev', 'page', 'next', 'skip','limit', 'count'] ,//自定义分页布局
+	    	hash:'fenye',
+	    	groups: 1 ,//只显示 1 个连续页码
+	    	last: false //不显示尾页
+	    	
+	    },
+	    initSort: {
+	        field: 'sort' //排序字段，对应 cols 设定的各字段名
+	        ,type: 'asc' //排序方式  asc: 升序、desc: 降序、null: 默认排序
+	      },
+	    cols: [
+	    	[ //表头
+	   		{field:'id',title:'ID',width:100,align:'center'},
+	   		 {field:'name',title:'用户名',width:100,align:'center',templet:function(value){
+	   			 return value.user.name;
+	   		 }},
+	   		 {field:'phone',title:'用户手机号',width:100,align:'center',templet:function(value){
+	   			 return value.user.phone;
+	   		 }},
+	   		 {field:'operate',title:'操作',align:'center',templet:function(value){
+	   			 switch(value.operate){
+	   			 case "consume":return "消费";
+	   			 case "withdraw":return "提现";
+	   			 }
+	   		 }},
+	   		 {field:'money',title:'金额',align:'center'},
+	   		 {field:'desc',title:'描述',align:'center'},
+	 		  {field:'createTime',title:'创建时间',align:'center',templet:function(value){
+		 			if(value.createTime!=null){
+		 				 var date=new Date(value.createTime).format("yyyy-MM-dd hh:mm:ss");
+		 				 return date;
+		 			 }
+		 			 return value.createTime;
+		 		 }},
+				 {field:'updateTime',title:'修改时间',align:'center',templet:function(value){
+					if(value.updateTime!=null){
+		 				 var date=new Date(value.updateTime).format("yyyy-MM-dd hh:mm:ss");
+		 				 return date;
+	 			 	}
+	 			 return value.updateTime;
+	 		 }},
+	 		{field:'status',title:'操作状态',align:'center',templet:function(value){
+				switch(value.status){
+				case 1:return "已同意";
+				case 2:return "已驳回";
+				}
+				return "无";
+         }},
+	      
+	    ]
+	    	]
+	  }); 
+	
+
+	});
+	
+</script>
+</head>
+<body>
+<table id="tt" lay-filter="demo">
+</table>
+	
+</body>
+</html>

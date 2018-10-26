@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+<link rel="stylesheet" type="text/css" th:href="@{/lib/common/layui/css/layui.css}" media="all">
+<script type="text/javascript" th:src="@{/lib/common/layui/layui.js}"></script>
+<script type="text/javascript" th:src="@{/js/date.js}"></script>
+<script type="text/javascript" th:src="@{/lib/common/layui/lay/modules/jquery.js}"></script>
+<script type="text/javascript" th:src="@{/lib/common/layui/lay/modules/table.js}"></script>
+<script type="text/javascript" th:src="@{/lib/common/layui/lay/modules/layer.js}"></script>
+<script type="text/javascript" th:src="@{/js/util.js}"></script>
+<style type="text/css">
+
+	body{overflow-y: scroll;}
+	.layui-table-cell{
+		height:60px;
+		ling-height:60px;
+	}
+	.layui-table-page{
+		margin-bottom: 24px;
+	}
+</style>
+<script type="text/html" id="op">
+  <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<script type="text/javascript">
+	var $=layui.jquery;
+	var finds_url="/admin/oldvip/findAll",deleteId_url='delete/',deleteIds_url='deleteAll',editor_url='/admin/oldvip/editor/';//设置所有的path路径
+	var table_id='tt';
+layui.use('table', function(){
+	  var table = layui.table;
+	  //第一个实例
+	  table.render({
+	    elem: '#'+table_id,
+	    url: finds_url ,//数据接口
+	    page: {
+	    	layout: ['prev', 'page', 'next', 'skip','limit', 'count'] ,//自定义分页布局
+	    	hash:'fenye',
+	    	groups: 1 ,//只显示 1 个连续页码
+	    	last: false //不显示尾页
+	    	
+	    },
+	    initSort: {
+	        field: 'numId' //排序字段，对应 cols 设定的各字段名
+	        ,type: 'asc' //排序方式  asc: 升序、desc: 降序、null: 默认排序
+	      },
+	    cols: [
+	    	[ //表头
+	      {type:'checkbox'},
+	    {field:'numId',title:'用户编号',align:'center'},
+ 		{field:'name',title:'姓名',align:'center'},
+ 		{field:'phone',title:'手机号',align:'center'},
+ 		{field:'clerk',title:'收款人',align:'center'},
+ 		{field:'payMethod',title:'支付方式',align:'center'},
+ 		{field:'bankName',title:'银行卡开户行',align:'center'},
+ 		{field:'bankCard',title:'银行卡号',align:'center'},
+ 		{field:'position',title:'客户省份',align:'center'},
+ 		{field:'referName',title:'推荐人名',align:'center'},
+ 		{field:'referArea',title:'推荐人省份',align:'center'},
+ 		{field:'payTime',title:'交易时间',align:'center',templet:function(value){
+ 			if(value.payTime!=null){
+ 				 var date=new Date(value.payTime).format("yyyy-MM-dd hh:mm:ss");
+ 				 return date;
+ 			 }
+ 			 return value.tradeTime;
+ 		 }},
+	    {field: 'operate',title: '操作', align:'center',toolbar:'#op'}
+	      
+	    ]
+	    	]
+	  }); 
+	  /**
+	  监听工具条的响应事件
+	  */
+	  table.on('tool(demo)', function(obj){
+		    var data = obj.data;
+		    if(obj.event === 'detail'){
+		      layer.msg('ID：'+ data.id + ' 的查看操作');
+		    } else if(obj.event === 'del'){
+		      layer.confirm('确定删除么？', function(index){
+		        obj.del();
+		        $.ajax({
+					type: "delete",
+				    url: deleteId_url+data.id,
+				    success: function(msg){
+				    	table.reload(table_id,{
+				    		page: {
+				    		    curr: location.hash.replace('#!fenye=', '') //从第当前页继续
+				    		  }
+				    	});
+				    }
+				});
+		        layer.close(index);
+		      });
+		    } else if(obj.event === 'edit'){
+		      //layer.alert('编辑行：<br>'+ JSON.stringify(data))
+		    	window.location.href=editor_url+data.id;
+		    }
+		  });
+	  /**处理选中的数据*/
+	  var $ = layui.$, active = {
+		  delData:function(){ //获取选中数据
+			  layer.confirm('确定删除所选数据么？', function(index){
+				  
+				  var checkStatus = table.checkStatus(table_id)
+			      ,data = checkStatus.data;
+			      //layer.alert(JSON.stringify(data));
+			      var ids=[];
+			      data.forEach(function(n,i){
+			    	  var id={};
+			    	  id['id']=n.id;
+			    	  ids.push(id);
+			      });
+			      $.ajax({
+						type: "post",
+					    url: deleteIds_url,
+					    contentType: "application/json;charset=utf-8",
+					    //dataType:'json',
+					    data:JSON.stringify(ids),
+					    success: function(msg){
+					    	table.reload(table_id,{
+					    		page: {
+					    		    curr: location.hash.replace('#!fenye=', '') //从第当前页继续
+					    		  }
+					    	});
+					    }
+					});
+			      layer.close(index);
+			  });
+		    },
+		    reload: function(){
+		      var demoReload = $('#demoReload'); 
+		      //执行重载
+		      var select=$("select[name='modules']").val();
+		      var url='/admin/oldvip/findOlds';
+		      if(select=='bianhao'){
+		      	url=url+"?numId="+demoReload.val();
+		      }else if(select=='name'){
+		      	url=url+"?name="+demoReload.val();
+		      }else if(select=='phone'){
+		      	url=url+"?phone="+demoReload.val();
+		      }
+		      table.reload(table_id, {
+		        page: {
+		          curr: 1 //重新从第 1 页开始
+		        },
+		        url:url,
+		        method:'get'
+		      });
+		    }
+	  }
+	  $('.buttons .layui-btn').on('click', function(){
+		    var type = $(this).data('type');
+		    active[type] ? active[type].call(this) : '';
+		  });
+	  $('.demoTable .layui-btn').on('click', function(){
+	    var type = $(this).data('type');
+	    active[type] ? active[type].call(this) : '';
+	  });
+	  
+	  $('#crossError').on('click',function(){
+		  layer.load();
+		  $.ajax({
+			   type: "GET",
+			   url: "/admin/oldvip/checkError?check=crossError",
+			   success: function(msg){
+				 layer.closeAll('loading');
+			     if(msg.data!=null&&msg.data!=''){
+			    	 
+			    	 alert("用户编号为"+msg.data+"用户并未被包含,可能是由于该用户的上级不存在，或者是上级的上级...以此类推的某个上级用户不存在于系统中，请仔细审查");
+			     }else{
+			    	 alert("导入数据并未检测到错误");
+			     }
+			   },
+			   error:function(xhr,e,y){
+				   layer.closeAll('loading');
+				   alert(JSON.stringify(xhr));
+			   }
+			});
+		});
+	  $('#verticalError').on('click',function(){
+		  layer.load();
+		  $.ajax({
+			   type: "GET",
+			   url: "/admin/oldvip/checkError?check=verticalError",
+			   success: function(msg){
+				 layer.closeAll('loading');
+			     if(msg.data!=''&&msg.data!=null){
+			    	 alert("用户编号为"+msg.data+"的用户，上级并不存在于系统中，请核查");
+			     }else{
+			    	 alert("导入数据并未检测到错误");
+			     }
+			   },
+			   error:function(xhr,e,y){
+				   layer.closeAll('loading');
+				   alert(JSON.stringify(xhr));
+			   }
+			});
+		});
+	});
+
+
+
+
+</script>
+</head>
+<body>
+
+<div class="demoTable" style="width:370px;margin:0 auto">
+  <div class="layui-inline">
+	  <div class="layui-input-inline">
+	    <select name="modules" lay-verify="required" lay-search="" style="height:38px">
+	      <option value="bianhao" selected="">用户编号</option>
+	      <option value="name">用户名</option>
+	      <option value="phone">手机号</option>
+	    </select>
+	  </div>
+  </div>
+  <div class="layui-inline">
+    <input class="layui-input" name="id" id="demoReload" autocomplete="off">
+  </div>
+  <button class="layui-btn" data-type="reload">搜索</button>
+</div>
+<div class="buttons">
+<a class="layui-btn layui-btn-primary" href='/admin/oldvip/add' style="margin-left:20px;margin-top: 15px;">增加</a>
+<a class="layui-btn layui-btn-primary" data-type="delData"  href="javascript:;"  style="margin-left:20px;margin-top: 15px;">删除</a>
+<div style="float:right;margin-top: 15px;">
+	<button class="layui-btn layui-btn-normal" id="crossError">横向检错</button>
+	<button class="layui-btn layui-btn-normal" id="verticalError">纵向检错</button>
+</div>
+</div>
+<table id="tt" lay-filter="demo">
+</table>
+	
+</body>
+</html>

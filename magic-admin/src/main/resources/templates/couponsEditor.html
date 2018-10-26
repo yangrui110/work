@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" th:href="@{/css/icon.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/css/xidi.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/css/base.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/css/home.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/css/jHsDate.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/layui/css/layui.css}">
+<script type="text/javascript" th:src="@{/layui/layui.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/date.js}"></script>
+<script type="text/javascript" th:src="@{/js/up.js}"></script>
+<script type="text/javascript" th:src="@{/js/area.js}"></script>
+<script type="text/javascript" th:src="@{/js/jHsDate.js}"></script>
+<script type="text/javascript">
+layui.use('upload', function(){
+	  var upload = layui.upload;
+	   
+	  //执行实例
+	  var uploadInst = upload.render({
+	    elem: '#upImg' //绑定元素
+	    ,url: '/admin/batch/upload' //上传接口
+	    ,done: function(data){
+	      //上传完毕回调
+	    	$("input[name='pics']").attr("value",data.data);
+			$("img[name='img']").attr("src",data.data);
+	    }
+	    ,error: function(){
+	      //请求异常回调
+	    }
+	  });
+	});
+    $(function(){
+    	$('#startTime').jHsDate({
+    		defDate: '[[${coupon.startTime}]]'==null?new Date().toLocaleString():'[[${coupon.startTime}]]',
+    		defIsShow: true
+    	});
+    	$('#arriveTime').jHsDate({
+    		defDate: '[[${coupon.arriveTime}]]'==null?new Date().toLocaleString():'[[${coupon.arriveTime}]]',
+    		defIsShow: true
+    	});
+    })
+</script>
+</head>
+<body>
+<!-- 
+<div style="width:500px;margin:0 auto">
+	<div style="padding:3px 2px;border-bottom:1px solid #ccc" th:text="${coupon.id}==null?'增加新用户':'修改'+${coupon.name}+'的信息'"></div>
+	<form id="ff" method="post" action="coupon/save">
+		<div>
+			<label for="name">姓名:</label>
+			<input class="easyui-validatebox form_input" type="text" name="name" required="true" th:value="${coupon.name}==null?'':${coupon.name}"></input>
+		</div>
+		<div>
+			<label for="phone">手机号:</label>
+			<input class="easyui-validatebox form_input" type="text" name="phone" required="true" validType="phone" th:value="${coupon.phone}==null?'':${coupon.phone}"></input>
+		</div>
+		<div>
+			<label for="mail">邮箱:</label>
+			<input class="easyui-validatebox form_input" type="text" name="mail" required="true" validType="email" th:value="${coupon.mail}==null?'':${coupon.mail}"></input>
+		</div>
+		<div>
+			<label for="province">省份:</label>
+			<input class="easyui-validatebox form_input" type="text" name="province" required="true" validType="text" th:value="${coupon.province}==null?'':${coupon.province}"></input>
+		</div>
+		<div>
+			<label for="city">城市:</label>
+			<input class="easyui-validatebox form_input" type="text" name="city" required="true" validType="text" th:value="${coupon.city}==null?'':${coupon.city}"></input>
+		</div>
+		<div>
+			<label for="address">地址:</label>
+			<input class="easyui-validatebox form_input" type="text" name="address" required="true" validType="text" th:value="${coupon.address}==null?'':${coupon.address}"></input>
+		</div>
+		<div>
+			<label for="referralCode">推荐码:</label>
+			<input class="easyui-validatebox form_input" type="text" name="referralCode" required="true" validType="text" th:value="${coupon.referralCode}==null?'':${coupon.referralCode}"></input>
+		</div>
+		
+		<div>
+			<input type="submit" value="提交">
+		</div>
+	</form>
+	</div>
+	-->
+	<section class="aui-content">
+            <div style="height:20px;"></div>
+            
+            <div class="aui-content-up">
+                <form action="/admin/coupon/save" name="form1" method="post">
+                <input type="hidden" th:value="${coupon.id}==null?'':${coupon.id}" name="id">
+                    
+                    <div class="aui-content-up-form">
+                        <h2 th:text="${coupon.id}==null?'增加卡券':'修改卡券'+${coupon.title}+'的信息'"></h2>
+                    </div>
+                    
+                    <div class="aui-form-group clear">
+                        <label class="aui-label-control">
+                                                                                                  标题<em>*</em>
+                        </label>
+                        <div class="aui-form-input">
+                            <input type="text" class="aui-form-control-two" name="title" id="2" placeholder="请输入菜单标题" th:value="${coupon.title}==null?'':${coupon.title}"/>
+                            <span class="tips" id="divname">卡券名</span>
+                        </div>
+                    </div>
+                    
+                    <div class="aui-form-group clear">
+                        <label class="aui-label-control">
+                           	  卡券面值/折扣<em>*</em>
+                        </label>
+                        <div class="aui-form-input">
+                            <input type="text" class="aui-form-control-two" name="worth" id="2" placeholder="请输入卡券面值/折扣" th:value="${coupon.worth}==null?'':${coupon.worth}"/>
+                            <span class="tips" id="divname">卡券折扣小于1，例0.9是9折，卡券面值大于1</span>
+                        </div>
+                    </div>
+                    <div class="aui-form-group clear">
+                        <label class="aui-label-control">
+                           	  原价<em>*</em>
+                        </label>
+                        <div class="aui-form-input">
+                            <input type="text" class="aui-form-control-two" name="price" id="2" placeholder="请输入购买价格" th:value="${coupon.price}==null?'':${coupon.price}"/>
+                            <span class="tips" id="divname">购买原价</span>
+                        </div>
+                    </div>
+  					<div class="aui-form-group clear">
+                        <label class="aui-label-control">
+                           	  vip价格<em>*</em>
+                        </label>
+                        <div class="aui-form-input">
+                            <input type="text" class="aui-form-control-two" name="vipPrice" id="2" placeholder="请输入vip购买价格" th:value="${coupon.vipPrice}==null?'':${coupon.vipPrice}"/>
+                            <span class="tips" id="divname">vip购买价格</span>
+                        </div>
+                    </div>
+                    <div class="aui-form-group clear">
+                        <label class="aui-label-control">
+                           	  描述<em>*</em>
+                        </label>
+                        <div class="aui-form-input">
+                            <input type="text" class="aui-form-control-two" name="describetion" id="2" placeholder="请输入描述信息" th:value="${coupon.describetion}==null?'':${coupon.describetion}"/>
+                            <span class="tips" id="divname">卡券的描述</span>
+                        </div>
+                    </div>
+                    <div class="aui-form-group clear">
+                        <label class="aui-label-control">
+                           	  开始时间<em>*</em>
+                        </label>
+					    <div class="aui-form-input">
+                            <input type="text" class="aui-form-control-two" name="startTime" id="startTime"/>
+                            <span class="tips" id="divname">开始时间选择</span>
+                        </div>
+                    </div>
+                    <div class="aui-form-group clear">
+                        <label class="aui-label-control">
+                           	  有效时间<em>*</em>
+                        </label>
+                        <div class="aui-form-input">
+                            <input type="text" class="aui-form-control-two" name="arriveTime" id="arriveTime" />
+                            <span class="tips" id="divname">有效日期</span>
+                        </div>
+                    </div>
+                    <div class="aui-btn-default">
+		                <button class="aui-btn aui-btn-account" type="submit">保存并提交</button>
+		            </div>
+                </form>
+            </div>
+            
+        </section>
+	<!--
+				<tr><td colspan="2"><img alt="身份证图片" src="/admin/css/icons/no.png" id="identity" style="width:60px;height: 60px;" onclick="uploadImage()"></td></tr>
+	</form>-->
+</body>
+</html>

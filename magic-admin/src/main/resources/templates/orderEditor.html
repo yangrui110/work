@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" th:href="@{/css/easyui.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/css/icon.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/css/xidi.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/css/base.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/css/home.css}">
+<script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.easyui.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/date.js}"></script>
+<script type="text/javascript" th:src="@{/js/up.js}"></script>
+<script type="text/javascript" th:src="@{/js/area.js}"></script>
+<script type="text/javascript">
+	function uploadImage(){
+		$("<div id='upload'></div>").dialog({
+			title:"上传图片",
+			width:500,
+			height:500,
+			content:'<form id="ff" action="/admin/batch/upload" method="post" enctype="multipart/form-data"><table><tr><td><input type="file" value="请选择上传图片" name="file"></td></tr><tr><td><img src="" name="img"></td></tr><tr><td><input type="submit" value="确定上传"></td></tr></table></form>',
+			closable:true,
+			buttons:[
+				{
+					text:"确定",
+					handler:function(){
+						$("#upload").dialog("destroy");
+					}
+				}
+			],
+			onclose:function(){
+				$(this).dialog("destroy");
+			}
+		});
+		$('#ff').form({
+			success:function(data){
+				//alert(data);
+				$("img[name='img']").attr("src",data);
+			}
+		});
+	}
+	function loadProvince(){
+		if('[[${user.province}]]'!=null&&'[[${user.province}]]'!=''){
+			$("#province").html("<option value='[[${user.province}]]' selected>[[${user.province}]]</option>");
+			loadCity();
+		}
+	}
+	function loadCity(){
+		if('[[${user.city}]]'!=''){
+			//alert('[[${user.city}]]');
+			$("#city").html("<option value='[[${user.city}]]' selected>[[${user.city}]]</option>");
+			loadCountry();
+		}
+	}
+	function loadCountry(){
+		if('[[${user.country}]]'!=null&&'[[${user.country}]]'!=''){
+			$("#country").html("<option value='[[${user.country}]]' selected>[[${user.country}]]</option>");
+		}
+	}
+	//验证姓名
+    function checkna(){
+        na=form1.name.value;
+        if( na.length <1 || na.length >6)
+        {
+            divname.innerHTML='<font class="tips_false">长度是1~6个字符</font>';
+        }else{
+            divname.innerHTML='<font class="tips_true">输入正确</font>';
+        }
+    }
+    function checkem(){
+        na=form1.mail.value;
+        if( na.length <1)
+        {
+            divemail.innerHTML='<font class="tips_false">请输入邮箱值</font>';
+        }else{
+            divemail.innerHTML='<font class="tips_true">输入正确</font>';
+        }
+    }
+    function checkreferral(){
+    	/*na=form1.referralCode.value;
+        if( na.length <1)
+        {
+            divreferralCode.innerHTML='<font class="tips_false">请输入推荐码</font>';
+        }else{
+            divreferralCode.innerHTML='<font class="tips_true">输入正确</font>';
+        }*/
+        $("input[name='referralCode']").hide();
+    }
+    //验证手机号码
+    function checkpsd1(){
+       na=form1.phone.value;
+        if( na.length <11 || na.length >11)
+        {
+            phone.innerHTML='<font class="tips_false">必须是11位的数字</font>';
+        }else{
+            phone.innerHTML='<font class="tips_true">输入正确</font>';
+        }
+    }
+    
+    $(function(){
+    	_init_area();
+    	init_province("[[${user.province}]]","[[${user.city}]]","[[${user.country}]]");
+    })
+</script>
+</head>
+<body>
+	<section class="aui-content">
+            <div style="height:20px;"></div>
+            
+            <div class="aui-content-up">
+                <form action="/admin/user/save" name="form1" method="post">
+                <input type="hidden" th:value="${user.id}==null?'':${user.id}" name="id">
+                    <div class="aui-content-up-form">
+                        <h2 th:text="${user.id}==null?'增加新用户':'修改用户'+${user.name}+'的信息'"></h2>
+                    </div>
+                    <div class="aui-form-group clear">
+                        <label class="aui-label-control">
+                           	  姓名 <em>*</em>
+                        </label>
+                        <div class="aui-form-input">
+                            <input type="text" class="aui-form-control-two" name="name" onBlur="checkna()" required id="1" placeholder="请输入姓名" th:value="${user.name}==null?'':${user.name}">
+                            <span class="tips" id="divname">长度1~6个字符</span>
+                        </div>
+                    </div>
+                    <div class="aui-form-group clear">
+                        <label class="aui-label-control">
+                                                                                                   手机号码 <em>*</em>
+                        </label>
+                        <div class="aui-form-input">
+                            <input type="text" class="aui-form-control-two" name="phone" id="2" placeholder="请输入11位的手机号码" onBlur="checkpsd1()" th:value="${user.phone}==null?'':${user.phone}" required/>
+                            <span class="tips" id="phone">必须是11位的数字</span>
+                        </div>
+                    </div>
+                    <div class="aui-form-group clear">
+                        <label class="aui-label-control">
+                           	  邮箱<em>*</em>
+                        </label>
+                        <div class="aui-form-input">
+                            <input type="text" class="aui-form-control-two" name="mail" onBlur="checkem()" required id="1" placeholder="请输入邮箱地址" th:value="${user.mail}==null?'':${user.mail}">
+                            <span class="tips" id="divemail">必须填写值</span>
+                        </div>
+                    </div>
+                    <div class="aui-form-group clear">
+                        <label class="aui-label-control">
+                           	  省份 <em>*</em>
+                        </label>
+                        <div class="aui-form-input">
+                            <select id="province" name="province" class="form_input"></select>  
+                            <span class="tips" id="divname">选择省份信息</span>
+                        </div>
+                    </div>
+                    <div class="aui-form-group clear">
+                        <label class="aui-label-control">
+                           	  城市<em>*</em>
+                        </label>
+                        <div class="aui-form-input">
+                            <select id="city" name="city" class="form_input"></select>  
+                            <span class="tips" id="divname">选择城市信息</span>
+                        </div>
+                    </div>
+                    <div class="aui-form-group clear">
+                        <label class="aui-label-control">
+                           	  区域 <em>*</em>
+                        </label>
+                        <div class="aui-form-input">
+                           <select id="country" name="country" class="form_input" value="${user.country}==null?'':${user.country}"></select>
+                           <span class="tips" id="divname">选择区域信息</span>
+                        </div>
+                    </div>
+                    <div class="aui-form-group clear">
+                        <label class="aui-label-control">
+                           	  详细地址 <em>*</em>
+                        </label>
+                        <div class="aui-form-input">
+                            <input type="text" class="aui-form-control-two" name="address" onBlur="checkem()" required id="1" placeholder="请输入详细地址" th:value="${user.address}==null?'':${user.address}">          
+                           <span class="tips" id="divname">填写具体地址</span>
+                        </div>
+                    </div>
+                   	<div class="aui-form-group clear">
+                        <label class="aui-label-control">
+                           	  会员等级<em>*</em>
+                        </label>
+                        <div class="aui-form-input">
+                            <select class="aui-form-control-two" name="vip">
+                            	<option value="1" th:selected="${user.vip}==1?selected:false">普通会员</option>
+                            	<option value="2" th:selected="${user.vip}==2?selected:false">正式会员</option>
+                            	
+                            </select>
+                            <span class="tips" id="divname">会员等级</span>
+                        </div>
+                    </div>
+                    <div class="aui-form-group clear">
+                        <label class="aui-label-control">
+                           	  推荐码 <em>*</em>
+                        </label>
+                        <div class="aui-form-input">
+                            <input readonly="readonly"  type="text" class="aui-form-control-two" name="referralCode" id="1" th:value="${user.referralCode}==null?'':${user.referralCode}">
+                            <span class="tips" id="divreferralCode">此字段不可修改和填写</span>
+                        </div>
+                    </div>
+                    <div class="aui-btn-default">
+		                <button class="aui-btn aui-btn-account" type="submit">保存并提交</button>
+		            </div>
+                </form>
+            </div>
+            
+        </section>
+	<!--
+				<tr><td colspan="2"><img alt="身份证图片" src="/admin/css/icons/no.png" id="identity" style="width:60px;height: 60px;" onclick="uploadImage()"></td></tr>
+	</form>-->
+</body>
+</html>

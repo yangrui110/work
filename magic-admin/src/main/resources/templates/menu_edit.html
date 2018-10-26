@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" th:href="@{/css/icon.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/css/xidi.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/css/base.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/css/home.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/layui/css/layui.css}">
+<script type="text/javascript" th:src="@{/layui/layui.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/date.js}"></script>
+<script type="text/javascript" th:src="@{/js/up.js}"></script>
+<script type="text/javascript" th:src="@{/js/area.js}"></script>
+<script type="text/javascript">
+layui.use('upload', function(){
+	  var upload = layui.upload;
+	   
+	  //执行实例
+	  var uploadInst = upload.render({
+	    elem: '#upImg' //绑定元素
+	    ,url: '/admin/batch/upload' //上传接口
+	    ,done: function(data){
+	      //上传完毕回调
+	    	$("input[name='icon']").attr("value",data.data);
+			$("img[name='img']").attr("src",data.data);
+	    }
+	    ,error: function(){
+	      //请求异常回调
+	    }
+	  });
+	});
+</script>
+</head>
+<body>
+	<section class="aui-content">
+            <div style="height:20px;"></div>
+            
+            <div class="aui-content-up">
+                <form action="/admin/menu/save" name="form1" method="post">
+                <input type="hidden" th:value="${menu.id}==null?'':${menu.id}" name="id">
+                    <div class="aui-form-group clear">
+                        <label class="aui-label-control">
+                                                                                                  标题<em>*</em>
+                        </label>
+                        <div class="aui-form-input">
+                            <input type="text" class="aui-form-control-two" name="title" id="2" placeholder="请输入菜单标题" th:value="${menu.title}==null?'':${menu.title}"/>
+                            <span class="tips" id="divname">菜单名</span>
+                        </div>
+                    </div>
+                    <div class="aui-content-up-form">
+                        <h2 th:text="${menu.id}==null?'增加菜单':'修改菜单'+${menu.title}+'的信息'"></h2>
+                    </div>
+                    <div class="aui-form-group clear">
+                        <label class="aui-label-control">
+                           	  菜单级别<em>*</em>
+                        </label>
+                        <div class="aui-form-input">
+                            <select class="aui-form-control-two" name="type">
+                           		<option value="0" th:selected="${menu.type}==0?selected:false">一级菜单</option>
+                            	<option value="1" th:selected="${menu.type}==1?selected:false">二级菜单</option>
+                            	<option value="2" th:selected="${menu.type}==2?selected:false">三级菜单</option>
+                            	
+                            </select>
+                            <span class="tips" id="divname">菜单级别</span>
+                        </div>
+                    </div>
+                    <div class="aui-form-group clear">
+                        <label class="aui-label-control">
+                           	  图标<em>*</em>
+                        </label>
+                        <div class="aui-form-input">
+                           <div><img id="upImg" name ="img" style="width:120px;height:120px" th:src="${menu.icon}==null?'http://admin.wanxidi.com.cn/admin/e8fe60cce3aa472fb4c0956b88b00379.jpg':${menu.icon}""><input type="hidden" name="icon" th:value="${menu.icon}==null?'http://api.wanxidi.com.cn/a09896c96e054620a4b1b747edfe79cf.png':${menu.icon}"></div>
+                           <span class="tips" id="divname">菜单图标</span>
+                        </div>
+                    </div>
+                    <div class="aui-btn-default">
+		                <button class="aui-btn aui-btn-account" type="submit">保存并提交</button>
+		            </div>
+                </form>
+            </div>
+            
+        </section>
+</body>
+</html>
