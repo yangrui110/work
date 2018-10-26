@@ -17,9 +17,9 @@ public class WeChatConfig {
 	public static String CREATE_URL="https://api.mch.weixin.qq.com/pay/unifiedorder";
 	public static String REBACK_URL="https://api.mch.weixin.qq.com/mmpaysptrans/pay_bank";
 	public static String RSA_URL="https://fraud.mch.weixin.qq.com/risk/getpublickey";
-	public static String APPID="wx9a36243980a50ce0";
-	public static String MCH_ID="1503923001";
-	public static String APPSECRET="f3241d6c32871dcda59505ee9c445395";
+	public static String APPID="";
+	public static String MCH_ID="";
+	public static String APPSECRET="";
 	/**支付结果通知的回调路径*/
 	public static String NOTIFY_URL="http://api.wanxidi.com.cn/wechat/notify/";
 	/**充值结果通知*/
